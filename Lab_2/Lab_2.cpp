@@ -1,17 +1,23 @@
 ﻿#include <iostream>
-
+#include <algorithm>
+#include <vector>
+#include "Lab_2.h"
 using namespace std;
-
-int main() {
-    setlocale(LC_ALL, "Ukrainian");
-    const int n = 10;
-    int a[n];
+void fill_with_random_numbers_and_print(const int& n, int  a[10])
+{
+    cout << "Array: ";
     for (int i = 0; i < n; i++) {
         a[i] = rand() % 10;
         cout << a[i] << " ";
     }
     cout << endl;
-
+}
+int main() {
+    setlocale(LC_ALL, "Ukrainian");
+    srand(time(NULL));
+    const int n = 10;
+    int a[n];
+    fill_with_random_numbers_and_print(n, a);
     int max_index = 0;
     int product = 1;
     int first_zero = -1;
@@ -36,7 +42,7 @@ int main() {
     cout << "Max element index: " << max_index << endl;
     cout << "Product of elements between first and second zeros: ";
     if (first_zero == -1 || second_zero == -1) {
-        cout << "Знайдено недостатньо нульових елементiв" << endl;
+        cout << "Not enough null elements found" << endl;
     }
     else {
         for (int i = first_zero + 1; i < second_zero; i++) {
@@ -44,18 +50,23 @@ int main() {
         }
         cout << product << endl;
     }
-    for (int i = 0; i < n / 2; i++) {
-        if (i % 2 == 0) {
-            swap(a[i], a[n - i - 1]);
+    cout << "Sorted array: ";
+    vector<int> buffer;
+    for (int i = 0, j = 1; i < n && j < n; i++) {
+        if (i > 0 && i % 2 != 0 ) {
+            swap(a[i], a[i-j]);
+            j++;
         }
-
+        if (i % 2 == 0) {
+            buffer.push_back(a[i]);
+        }
     }
-
-    // виведення перетвореного масиву
+    for (int i = n / 2, j=0; i < n; i++, j++) {
+        a[i] = buffer[j];
+    }
     for (int i = 0; i < n; i++) {
         cout << a[i] << " ";
     }
     cout << endl;
-
     return 0;
 }
